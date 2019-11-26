@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { 
+import {
   PanResponder,
   Animated,
   Dimensions,
@@ -12,8 +12,13 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 export default class Animator extends Component{
   constructor(props){
     super(props);
-    
+
     this.position = new Animated.ValueXY(this.props.currentPosition);
+
+    this.position.addListener((value) => {
+      this.props.onPositionChange && this.props.onPositionChange(value);
+    });
+
 
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -22,21 +27,25 @@ export default class Animator extends Component{
     });
   }
 
+  componentWillUnmount(): void {
+    this.position.removeAllListeners();
+  }
+
   render() {
     return (
-      <Animated.View 
-        style={[
-          {...this.position.getLayout(), left: 0},
-          StyleSheet.flatten([
-            styles.animationContainer(this.props.containerHeight, this.props.backgroundColor),
-            styles.roundedEdges(this.props.roundedEdges),
-            styles.shadow(this.props.shadow)
-          ])
-        ]}
-        {...this._panResponder.panHandlers}
-      >
-        {this.props.children}
-      </Animated.View>
+        <Animated.View
+            style={[
+              {...this.position.getLayout(), left: 0},
+              StyleSheet.flatten([
+                styles.animationContainer(this.props.containerHeight, this.props.backgroundColor),
+                styles.roundedEdges(this.props.roundedEdges),
+                styles.shadow(this.props.shadow)
+              ])
+            ]}
+            {...this._panResponder.panHandlers}
+        >
+          {this.props.children}
+        </Animated.View>
     )
   }
 
@@ -71,7 +80,7 @@ export default class Animator extends Component{
     Animated.spring(this.position, {
       toValue: position
     }).start(() => this.props.onExpanded());
-    
+
     this.props.setCurrentPosition(position);
     callback();
   }
