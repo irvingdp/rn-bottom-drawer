@@ -21,12 +21,12 @@ export default class Animator extends Component{
 
 
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => false,
-      onStartShouldSetPanResponderCapture: () => false,
       onPanResponderMove: this._handlePanResponderMove,
       onPanResponderRelease: this._handlePanResponderRelease,
-      onMoveShouldSetPanResponder:         () => true,
-      onMoveShouldSetPanResponderCapture:  () => true
+      onStartShouldSetPanResponder:        ( e, state ) => false,
+      onStartShouldSetPanResponderCapture: ( e, state ) => false,
+      onMoveShouldSetPanResponder:         ( e, state ) => true,
+      onMoveShouldSetPanResponderCapture:  ( e, state ) => true,
     });
   }
 
