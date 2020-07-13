@@ -24,7 +24,7 @@ export default class Animator extends Component{
       onPanResponderMove: this._handlePanResponderMove,
       onPanResponderRelease: this._handlePanResponderRelease,
       onStartShouldSetPanResponderCapture: ( e, state ) => false,
-      onMoveShouldSetPanResponderCapture:  ( e, state ) => true,
+      onMoveShouldSetPanResponderCapture:  ( e, state ) => false,
       onMoveShouldSetPanResponder: (evt, gestureState) => {
         //return true if user is swiping, return false if it's a single click
         return !(gestureState.dx === 0 && gestureState.dy === 0)
